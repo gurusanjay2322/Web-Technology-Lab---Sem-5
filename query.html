@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Slideshow</title>
+  <style>
+    /* ... Your existing CSS styles ... */
+
+    .slideshow-container {
+      position: relative;
+      max-width: 100%;
+    }
+
+    .slideshow-container img {
+      display: none;
+      width: 100%;
+      height: auto;
+    }
+
+    .slideshow-container img.active {
+      display: block;
+    }
+
+    .slideshow-controls {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .slideshow-controls button {
+      padding: 5px 10px;
+      margin: 0 5px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slideshow-container">
+    <img src="hellcat.jpg" alt="Image 1">
+    <img src="muscle.jpg" alt="Image 2">
+    <img src="mustang.jpg" alt="Image 3">
+    <!-- Add more images -->
+
+    <div class="slideshow-controls">
+      <button id="prevBtn">Previous</button>
+      <button id="playBtn">Play</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      const images = $('.slideshow-container img');
+      let currentIndex = 0;
+      let intervalId;
+
+      function showImage(index) {
+        images.removeClass('active');
+        images.eq(index).addClass('active');
+      }
+
+      function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+      }
+
+      function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+      }
+
+      function startSlideshow() {
+        intervalId = setInterval(nextImage, 2000); // Change image every 2 seconds
+        $('#playBtn').text('Pause');
+      }
+
+      $('#nextBtn').click(nextImage);
+      $('#prevBtn').click(prevImage);
+
+      $('#playBtn').click(function() {
+        if ($(this).text() === 'Play') {
+          startSlideshow();
+        } else {
+          clearInterval(intervalId);
+          $(this).text('Play');
+        }
+      });
+
+      startSlideshow();
+    });
+  </script>
+</body>
+</html>
